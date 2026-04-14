@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import type { Tables } from '@/types/supabase'
@@ -85,6 +86,8 @@ export async function addPartner(
   if (error) {
     return { success: false, error: error.message }
   }
+
+  revalidatePath('/partners')
 
   return { success: true, data }
 }
